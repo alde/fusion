@@ -38,10 +38,11 @@ func DefaultConfig() *Config {
 		LogFormat: "text",
 
 		Database: DatabaseConfig{
-			Host: "mysql",
-			Port: 3306,
-			Name: "fusion",
-			User: "fusion",
+			Host:     "127.0.0.1",
+			Port:     3306,
+			Name:     "fusion",
+			User:     "fusion",
+			Password: "password",
 		},
 	}
 }

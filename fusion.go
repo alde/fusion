@@ -8,10 +8,11 @@ import (
 	kingpin "gopkg.in/alecthomas/kingpin.v2"
 
 	"github.com/alde/fusion/config"
+	"github.com/alde/fusion/db"
+	"github.com/alde/fusion/server"
 	"github.com/alde/fusion/version"
 
 	"github.com/braintree/manners"
-	"github.com/gorilla/mux"
 	"github.com/sirupsen/logrus"
 )
 
@@ -52,11 +53,7 @@ func main() {
 
 	setupLogging(config.LogFormat, config.LogLevel)
 
-	//db, err := NewDB(config.DatabaseDriver, config.DatabasePath)
-	//if err != nil {
-	//	 logrus.WithError(err).Fatal("Unable to set up database.")
-	//}
-	//sdefer db.Close()
+	sql := db.New(config.Database)
 
 	// Catch interrupt
 	go func() {
@@ -71,8 +68,7 @@ func main() {
 		manners.Close()
 	}()
 
-	//        router := server.NewRouter(config, db)
-	router := mux.NewRouter().StrictSlash(true)
+	router := server.NewRouter(sql)
 
 	bind := fmt.Sprintf("%s:%d", config.Address, config.Port)
 
